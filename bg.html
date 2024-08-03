@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zodlac</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        .calculator {
+            position: relative;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background: white;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            font-size: 1.2em;
+        }
+        button {
+            width: 22%;
+            padding: 10px;
+            margin: 2px;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+        button:active {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<svg id="hearts" viewBox="-600 -400 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <symbol id="heart" viewBox="-69 -16 138 138">
+      <path d="M0,12
+               C 50,-30 110,50  0,120
+               C-110,50 -50,-30 0,12z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="calculator">
+    <input type="text" id="display" readonly>
+    <br>
+    <button onclick="appendToDisplay('1')">1</button>
+    <button onclick="appendToDisplay('2')">2</button>
+    <button onclick="appendToDisplay('3')">3</button>
+    <button onclick="appendToDisplay('+')">+</button>
+    <br>
+    <button onclick="appendToDisplay('4')">4</button>
+    <button onclick="appendToDisplay('5')">5</button>
+    <button onclick="appendToDisplay('6')">6</button>
+    <button onclick="appendToDisplay('-')">-</button>
+    <br>
+    <button onclick="appendToDisplay('7')">7</button>
+    <button onclick="appendToDisplay('8')">8</button>
+    <button onclick="appendToDisplay('9')">9</button>
+    <button onclick="appendToDisplay('*')">*</button>
+    <br>
+    <button onclick="appendToDisplay('0')">0</button>
+    <button onclick="clearDisplay()">C</button>
+    <button onclick="calculateResult()">=</button>
+    <button onclick="appendToDisplay('/')">/</button>
+</div>
+
+<script>
+    const colors = ["#e03776","#8f3e98","#4687bf","#3bab6f","#f9c25e","#f47274"];
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const SVG_XLINK = "http://www.w3.org/1999/xlink";
+
+    let heartsRy = []
+
+    function useTheHeart(n){
+      let use = document.createElementNS(SVG_NS, 'use');
+      use.n = n;
+      use.setAttributeNS(SVG_XLINK, 'xlink:href', '#heart');
+      use.setAttributeNS(null, 'transform', `scale(${use.n})`);
+      use.setAttributeNS(null, 'fill', colors[n%colors.length]);
+      use.setAttributeNS(null, 'x', -69);
+      use.setAttributeNS(null, 'y', -69);
+      use.setAttributeNS(null, 'width', 138);
+      use.setAttributeNS(null, 'height', 138);
+      
+      heartsRy.push(use)
+      hearts.appendChild(use);
+    }
+
+    for(let n = 18; n >= 0; n--){useTheHeart(n)}
+
+    function Frame(){
+      window.requestAnimationFrame(Frame);
+      for(let i = 0; i < heartsRy.length; i++){
+        if(heartsRy[i].n < 18){heartsRy[i].n +=.01
+         }else{
+         heartsRy[i].n = 0;
+         hearts.appendChild(heartsRy[i])
+        }
+        heartsRy[i].setAttributeNS(null, 'transform', `scale(${heartsRy[i].n})`);
+      }
+    }
+
+    Frame();
+
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    function calculateResult() {
+        let display = document.getElementById('display');
+        try {
+            let result = eval(display.value);
+            display.value = "I mishuuuu Tangiiii!!!";
+        } catch (e) {
+            display.value = 'Error';
+        }
+    }
+</script>
+
+</body>
+</html>
